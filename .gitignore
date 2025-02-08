@@ -1,0 +1,10 @@
+grpc/proto
+
+app/rpc/gen
+
+.venv
+
+.vscode
+.idea
+
+**/__pycache__
