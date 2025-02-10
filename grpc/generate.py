@@ -14,6 +14,7 @@ PROTO_GEN_PATH  = f"{PATH_ROOT}/../app/rpc/gen"
 
 def fetch_proto_file():
     try:
+        os.makedirs(PROTO_DIR_PATH, exist_ok=True)
         urlretrieve(PROTO_FETCH_URL, f"{PROTO_DIR_PATH}/{PROTO_NAME}")
         print("Proto file downloaded successfully!")
     except Exception as err:
@@ -35,6 +36,8 @@ def generate_grpc_client():
     r = subprocess.run(fix_gen_cmd, shell=True, capture_output=True, text=True)
     if r.returncode != 0:
         print("Error creating 'gen' directory:\n", r.stderr)
+
+    print("gRPC client code generated successfully!")
 
 
 fetch_proto_file()
