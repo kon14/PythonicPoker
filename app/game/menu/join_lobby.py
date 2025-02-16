@@ -1,5 +1,5 @@
 from app.rpc.gen.rustic_poker_pb2_grpc import RusticPokerStub
-from app.rpc import join_lobby_rpc, watch_state_rpc
+from app.rpc import join_lobby_rpc
 from ..player import PlayerIdentity
 
 
