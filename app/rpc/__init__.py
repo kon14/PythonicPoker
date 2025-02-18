@@ -7,6 +7,7 @@ from .join_lobby import *
 from .leave_lobby import *
 from .list_lobbies import *
 from .respond_betting_phase import *
+from .respond_drawing_phase import *
 from .respond_lobby_matchmaking import *
 from .set_lobby_matchmaking_status import *
 from .start_lobby_game import *

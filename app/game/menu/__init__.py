@@ -3,6 +3,7 @@ from typing import Literal
 from app.rpc.gen.rustic_poker_pb2_grpc import RusticPokerStub
 from app.rpc import start_lobby_rpc, watch_state_rpc
 from .bet import bet_menu
+from .draw import draw_menu
 from .host_lobby import host_lobby_menu
 from .join_lobby import join_lobby_menu
 from .list_lobbies import list_lobbies_menu
@@ -30,8 +31,8 @@ def show_main_menu(stub: RusticPokerStub, player: PlayerIdentity):
                 watch_state_rpc(stub, player)
             elif action == "bet":
                 bet_menu(stub, player)
-            # elif action == "draw":
-            #     draw_menu(stub, player)
+            elif action == "draw":
+                draw_menu(stub, player)
             else:
                 break
 
