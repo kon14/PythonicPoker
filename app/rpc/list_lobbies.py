@@ -1,6 +1,7 @@
 from google.protobuf.empty_pb2 import Empty
 
 from .gen.rustic_poker_pb2_grpc import RusticPokerStub
+from .utils import call
 
 
 def list_lobbies_rpc(stub: RusticPokerStub):
@@ -9,5 +10,5 @@ def list_lobbies_rpc(stub: RusticPokerStub):
     """
 
     req = Empty()
-    res = stub.GetLobbies(req)
+    res = call(stub.GetLobbies, req)
     return res
