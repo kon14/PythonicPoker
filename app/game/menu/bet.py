@@ -12,17 +12,22 @@ def bet_menu(
     player: PlayerIdentity,
 ):
     action = select_action()
+    success_msg = None
     req = None
     if action == "bet":
         amount = specify_bet_amount()
         req = RespondBettingPhaseRequest(bet=amount)
+        success_msg = "Bet placed successfully!"
     elif action == "call":
         req = RespondBettingPhaseRequest(call=Empty())
+        success_msg = "Bet called successfully!"
     elif action == "raise":
         amount = specify_bet_amount()
         req = RespondBettingPhaseRequest(raise_bet=amount)
+        success_msg = "Bet raised successfully!"
     elif action == "fold":
         req = RespondBettingPhaseRequest(fold=Empty())
+        success_msg = "Player folded successfully!"
 
     try:
         respond_betting_phase_rpc(stub, player, req)
@@ -31,7 +36,7 @@ def bet_menu(
         print(f"Error:\n{err}")
         return
 
-    print("Lobby joined successfully!")
+    print(success_msg)
 
 
 def select_action() -> Literal["bet", "call", "raise", "fold"]:
