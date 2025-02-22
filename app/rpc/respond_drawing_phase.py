@@ -16,7 +16,7 @@ def respond_drawing_phase_rpc(
     Takes a drawing phase action.
     """
 
-    req = RespondDrawingPhaseRequest()
+    req = RespondDrawingPhaseRequest(discarded_cards=discarded_cards)
     _: Empty = call_with_metadata(
         player.peer_address,
         stub.RespondDrawingPhase,
