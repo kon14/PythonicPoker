@@ -1,6 +1,6 @@
 from google.protobuf.empty_pb2 import Empty
 
-from .gen.rustic_poker_pb2_grpc import RusticPokerStub
+from ..grpc.gen.rustic_poker_pb2_grpc import RusticPokerStub
 from .utils import call
 
 

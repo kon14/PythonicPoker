@@ -1,21 +1,20 @@
 from google.protobuf.empty_pb2 import Empty
 
 from app.game.player import PlayerIdentity
-from .gen.rustic_poker_pb2_grpc import RusticPokerStub
+from ..grpc.gen.rustic_poker_pb2_grpc import RusticPokerStub
 from .utils import call_with_metadata
 
 
-def disconnect_rpc(
+def leave_lobby_rpc(
     stub: RusticPokerStub,
     player: PlayerIdentity,
 ):
     """
-    Disconnects the player from the game server.
+    Leaves the previously joined lobby.
     """
-
     req = Empty()
     _: Empty = call_with_metadata(
         player.peer_address,
-        stub.Disconnect,
+        stub.LeaveLobby,
         req,
     )

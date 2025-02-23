@@ -1,10 +1,11 @@
-grpc/proto
+lib/pythonic_poker_sdk/grpc/proto
+lib/pythonic_poker_sdk/grpc/gen
+lib/pythonic_poker_sdk/build
 
-app/rpc/gen
+**/.venv
 
-.venv
+**/__pycache__
+**/*.egg-info
 
 .vscode
 .idea
-
-**/__pycache__

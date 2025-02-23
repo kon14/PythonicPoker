@@ -9,7 +9,7 @@ PATH_ROOT = os.path.dirname(os.path.abspath(__file__))
 PROTO_FETCH_URL = "https://raw.githubusercontent.com/kon14/RusticPoker/refs/heads/main/proto/rustic_poker.proto"
 PROTO_DIR_PATH  = f"{PATH_ROOT}/proto"
 PROTO_NAME      = "rustic_poker.proto"
-PROTO_GEN_PATH  = f"{PATH_ROOT}/../app/rpc/gen"
+PROTO_GEN_PATH  = f"{PATH_ROOT}/gen"
 
 
 def fetch_proto_file():
@@ -40,6 +40,6 @@ def generate_grpc_client():
     print("gRPC client code generated successfully!")
 
 
-fetch_proto_file()
+#fetch_proto_file()
 
 generate_grpc_client()

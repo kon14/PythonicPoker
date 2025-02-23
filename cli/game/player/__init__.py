@@ -8,6 +8,7 @@ DEFAULT_PEER_ADDRESS = "192.124.234.25"
 class PlayerIdentity:
     def __init__(self):
         self.peer_address = self.get_peer_address()
+        self.name = "John Doe"
 
 
     @staticmethod
