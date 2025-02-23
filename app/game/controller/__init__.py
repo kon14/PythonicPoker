@@ -1,9 +1,10 @@
 import pygame
 
+from pythonic_poker_sdk import PlayerIdentity
 from .game_logic import game_logic
 from .types import View, VALID_VIEWS
 from ..connection import ServerConnection, get_server_connection
-from ..player import PlayerIdentity
+from ..player import get_peer_address
 
 
 # Virtual canvas resolution to be used throughout the game.
@@ -79,7 +80,8 @@ class GameController:
         elif self.player is None:
             # Player Setup
             self.set_view("player-login")
-            self.player = PlayerIdentity() # TODO: return nullable res via GUI-aware handler
+            peer_address = get_peer_address()
+            self.player = PlayerIdentity(peer_address) # TODO: return nullable res via GUI-aware handler
         elif self.view is None:
             self.set_view("lobby-selection")
 

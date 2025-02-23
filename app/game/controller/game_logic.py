@@ -1,12 +1,10 @@
 from typing import Callable
 from pygame import Surface
 
+from pythonic_poker_sdk import RusticPokerStub, PlayerIdentity, list_lobbies_rpc
 from .types import View
 from ..connection import ServerConnection
-from ..player import PlayerIdentity
 
-
-from pythonic_poker_sdk import list_lobbies_rpc, RusticPokerStub
 
 def game_logic(
     view: View,
