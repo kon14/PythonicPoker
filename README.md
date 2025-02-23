@@ -23,10 +23,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # Istall pythonic_poker_sdk in Editable Mode
-pytho3 pip install -e . TODOoooo
-
-# gRPC Client Code Generation
-python3 rpc/generate.py
+cd lib && pytho3 pip install -e . && cd -
 ```
 
 ## Running 💻 <a name="running"></a>
