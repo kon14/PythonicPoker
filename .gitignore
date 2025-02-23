@@ -1,5 +1,5 @@
-lib/pythonic_poker_sdk/grpc/proto
-lib/pythonic_poker_sdk/grpc/gen
+lib/pythonic_poker_sdk/rpc/proto
+lib/pythonic_poker_sdk/rpc/gen
 lib/pythonic_poker_sdk/build
 
 **/.venv

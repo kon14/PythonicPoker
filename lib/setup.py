@@ -7,14 +7,15 @@ import subprocess
 class GenerateGrpcClient(build_py):
     def run(self):
         print("Generating gRPC client code...")
-        subprocess.check_call(["python3", os.path.join("grpc", "generate.py")])
+        subprocess.check_call(["python3", os.path.join("pythonic_poker_sdk", "rpc", "generate.py")])
         super().run()
 
 
 setup(
     name="pythonic-poker-sdk",
     version="0.1.0",
-    packages=find_packages(),
+    # packages=find_packages(where="pythonic_poker_sdk"),
+    py_modules=["pythonic_poker_sdk"],
     description="A RusticPoker client library SDK for Python 🐍.",
     author="Konstantinos Feretos",
     author_email="konferetos@tutanota.com",

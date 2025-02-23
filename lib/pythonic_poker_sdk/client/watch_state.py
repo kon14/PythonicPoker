@@ -1,9 +1,9 @@
 from google.protobuf.empty_pb2 import Empty
 from typing import Iterator
 
-from app.game.player import PlayerIdentity
-from ..grpc.gen.rustic_poker_pb2_grpc import RusticPokerStub
-from ..grpc.gen.rustic_poker_pb2 import GameState
+from ..rpc.gen.rustic_poker_pb2_grpc import RusticPokerStub
+from ..rpc.gen.rustic_poker_pb2 import GameState
+from ..types import PlayerIdentity
 from .utils import call_with_metadata
 
 
