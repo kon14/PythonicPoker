@@ -39,7 +39,7 @@ pycparser==2.21
 pygame==2.6.1
 pyproject_hooks==1.0.0
 pyrsistent==0.19.3
--e git+ssh://git@github.com/kon14/PythonicPoker.git@7058eaaf53e3c96c544dea4d328699c51714f08b#egg=pythonic_poker_sdk&subdirectory=lib
+-e git+ssh://git@github.com/kon14/PythonicPoker.git@1f491b8f21b72c27b950a72215f8b8acfb239a41#egg=pythonic_poker_sdk&subdirectory=lib
 rapidfuzz==2.15.1
 requests==2.28.2
 requests-toolbelt==0.10.1
