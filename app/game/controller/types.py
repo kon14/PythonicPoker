@@ -6,6 +6,7 @@ View = Literal[
     "player-login",
     # Pre-Game
     "lobby-selection",
+    "lobby-creation",
     "lobby",
     # In-Game
     "poker-ante",
@@ -21,6 +22,7 @@ VALID_VIEWS = [
     "player-login",
     # Pre-Game
     "lobby-selection",
+    "lobby-creation",
     "lobby",
     # In-Game
     "poker-ante",

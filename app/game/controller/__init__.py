@@ -1,11 +1,11 @@
 import pygame
+from typing import List
 
 from pythonic_poker_sdk import PlayerIdentity
 from app.constants.display import CANVAS_RESOLUTION, DISPLAY_RESOLUTION, FRAMES_PER_SECOND
 from .game_logic import game_logic
 from .types import View, VALID_VIEWS
-from ..connection import ServerConnection, get_server_connection
-from ..player import get_peer_address
+from ..connection import ServerConnection
 
 
 class GameController:
@@ -16,6 +16,7 @@ class GameController:
         self.view: View = "server-selection"
         self.connection: ServerConnection | None = None
         self.player: PlayerIdentity | None = None
+        self.events: List[pygame.event.Event] = []
 
 
     def start_game(self):
@@ -25,6 +26,7 @@ class GameController:
 
     def init_pygame(self):
         pygame.init()
+        pygame.display.set_caption("PythonicPoker")
         self.display = pygame.display.set_mode(DISPLAY_RESOLUTION)
         self.canvas = pygame.Surface(CANVAS_RESOLUTION)
         self.clock = pygame.time.Clock()
@@ -34,9 +36,11 @@ class GameController:
         running = True
         while running:
             # Handle PyGame Events
+            self.events.clear()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                self.events.append(event)
 
             # Clear Surfaces
             self.clear_surfaces()
@@ -50,6 +54,7 @@ class GameController:
                 canvas=self.canvas,
                 connection=self.connection,
                 player=self.player,
+                events=self.events.copy(),
             )
 
             # Render Game
