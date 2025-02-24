@@ -15,9 +15,8 @@ last_lobbies_res = None
 event_handlers = {}
 
 # Rendering
-TABLE_COLOR = (200, 200, 200)
-JOIN_COLOR = (255, 100, 0)
-HEADER_COLOR = (100, 100, 255)
+HOST_LOBBY_BTN_BG_COLOR = (0, 255, 50)
+JOIN_LOBBY_BTN_BG_COLOR = (255, 100, 0)
 CELL_PADDING = 10
 
 
@@ -25,19 +24,19 @@ def act(
     conn: ServerConnection,
     player: PlayerIdentity,
     on_lobby_join: Callable[[], None],
-    on_lobby_create: Callable[[], None],
+    on_lobby_host: Callable[[], None],
 ):
     lobbies_res = __poll_data(conn)
     join_lobby = lambda lobby_id : __join_lobby(conn, player, lobby_id, on_lobby_join)
-    create_lobby = lambda : on_lobby_create()
-    return (lobbies_res.lobbies, join_lobby, create_lobby)
+    host_lobby = lambda : on_lobby_host()
+    return (lobbies_res.lobbies, join_lobby, host_lobby)
 
 
 def render(data, canvas: pygame.Surface):
     lobbies = data[0]
     join_lobby = data[1]
-    create_lobby = data[2]
-    __draw_table(canvas, lobbies, join_lobby, create_lobby)
+    host_lobby = data[2]
+    __draw_table(canvas, lobbies, join_lobby, host_lobby)
 
 
 def handle_events(events: List[pygame.event.Event]):
@@ -75,7 +74,7 @@ def __draw_table(
     canvas: pygame.Surface,
     lobbies: Collection[LobbyInfoPublic],
     join_lobby: Callable[[str], None],
-    create_lobby: Callable[[], None],
+    host_lobby: Callable[[], None],
 ):
     global event_handlers
     headers = ["Lobby Name", "Host Player", "Player Count", "Lobby Status"]
@@ -83,10 +82,13 @@ def __draw_table(
     font = pygame.font.SysFont("Arial", 20)
     canvas.fill(WHITE_COLOR)
 
-    # Draw Table Header
-    y_offset = 50
+    starting_y_offset = 60
+    y_offset = starting_y_offset
 
-    # Draw Header
+    # Draw Host Lobby Button
+    __draw_host_btn(canvas, host_lobby, (1140, 10))
+
+    # Draw Table Header
     for col, header in enumerate(headers):
         header_text = font.render(header, True, BLACK_COLOR)
         x_offset = sum(col_widths[:col]) + (CELL_PADDING * (col + 1))
@@ -116,7 +118,23 @@ def __draw_table(
                 canvas.blit(cell_text, (x_offset, y_offset + text_col_y_offset))
         y_offset += 50
 
-    pygame.draw.rect(canvas, BLACK_COLOR, pygame.Rect(0, 50, CANVAS_RESOLUTION[0], y_offset - 50), 2)
+    pygame.draw.rect(canvas, BLACK_COLOR, pygame.Rect(0, starting_y_offset, CANVAS_RESOLUTION[0], y_offset - 50), 2)
+
+
+def __draw_host_btn(
+    canvas: pygame.Surface,
+    host_lobby_handler: Callable[[], None],
+    pos: Tuple[int, int],
+):
+    create_btn_surf = Button.build_surf("Host Lobby", BLACK_COLOR, HOST_LOBBY_BTN_BG_COLOR, 20, 5)
+    create_btn = Button(
+        id="btn-lobby-new",
+        surf=create_btn_surf,
+        pos=pos,
+        handler=host_lobby_handler,
+    )
+    create_btn.register_event_handler(event_handlers)  # TODO: cleanup dead lobbies...
+    create_btn.draw(canvas)
 
 
 def __draw_join_btn(
@@ -126,9 +144,9 @@ def __draw_join_btn(
     pos: Tuple[int, int],
 ):
     join_btn_handler = lambda: join_lobby(lobby_id)
-    join_btn_surf = Button.build_surf("Join", BLACK_COLOR, JOIN_COLOR, 20, 5)
+    join_btn_surf = Button.build_surf("Join", BLACK_COLOR, JOIN_LOBBY_BTN_BG_COLOR, 20, 5)
     join_btn = Button(
-        id=lobby_id,
+        id=f"btn-lobby-{lobby_id}",
         surf=join_btn_surf,
         pos=pos,
         handler=join_btn_handler,

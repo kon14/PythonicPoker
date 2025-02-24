@@ -1,7 +1,7 @@
 import pygame
 from typing import Callable, Tuple, Dict
 
-from app.utils import truncate_text, unscale_coords
+from app.utils import unscale_coords
 
 
 class Button:

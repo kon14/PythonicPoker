@@ -36,28 +36,27 @@ def game_logic(
         assert connection is not None
         assert player is not None
         on_lobby_join = lambda: set_view("lobby")
-        on_lobby_create = lambda: set_view("lobby-creation")
+        on_lobby_host = lambda: set_view("lobby-creation")
         data = views.lobby.selection.act(
             conn=connection,
             player=player,
             on_lobby_join=on_lobby_join,
-            on_lobby_create=on_lobby_create,
+            on_lobby_host=on_lobby_host,
         )
         views.lobby.selection.handle_events(events)
         views.lobby.selection.render(data, canvas)
 
-    # elif view == "lobby-creation":
-    #     assert connection is not None
-    #     assert player is not None
-    #     on_lobby_create = lambda: set_view("lobby")
-    #     on_cancel = lambda: set_view("lobby-selection")
-    #     data = views.lobby.creation.act(
-    #         conn=connection,
-    #         on_lobby_create=on_lobby_create,
-    #         on_cancel=on_cancel,
-    #     )
-    #     # TODO: pass in lobby selection state setter, view setting closure
-    #     views.lobby.creation.render(data, canvas)
+    elif view == "lobby-creation":
+        assert connection is not None
+        assert player is not None
+        on_lobby_host = lambda: set_view("lobby")
+        on_cancel = lambda: set_view("lobby-selection")
+        data = views.lobby.host.act(
+            conn=connection,
+            on_lobby_host=on_lobby_host,
+            on_cancel=on_cancel,
+        )
+        views.lobby.host.render(data, canvas)
 
     elif view == "lobby":
         assert connection is not None
