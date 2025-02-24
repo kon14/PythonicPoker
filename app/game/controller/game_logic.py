@@ -53,9 +53,11 @@ def game_logic(
         on_cancel = lambda: set_view("lobby-selection")
         data = views.lobby.host.act(
             conn=connection,
+            player=player,
             on_lobby_host=on_lobby_host,
             on_cancel=on_cancel,
         )
+        views.lobby.host.handle_events(events)
         views.lobby.host.render(data, canvas)
 
     elif view == "lobby":

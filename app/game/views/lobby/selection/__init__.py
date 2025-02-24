@@ -128,12 +128,12 @@ def __draw_host_btn(
 ):
     create_btn_surf = Button.build_surf("Host Lobby", BLACK_COLOR, HOST_LOBBY_BTN_BG_COLOR, 20, 5)
     create_btn = Button(
-        id="btn-lobby-new",
+        id="btn-lobby-host",
         surf=create_btn_surf,
         pos=pos,
         handler=host_lobby_handler,
     )
-    create_btn.register_event_handler(event_handlers)  # TODO: cleanup dead lobbies...
+    create_btn.register_event_handler(event_handlers)
     create_btn.draw(canvas)
 
 

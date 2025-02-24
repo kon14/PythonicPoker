@@ -26,6 +26,7 @@ class GameController:
 
     def init_pygame(self):
         pygame.init()
+        pygame.display.set_caption("PythonicPoker")
         self.display = pygame.display.set_mode(DISPLAY_RESOLUTION)
         self.canvas = pygame.Surface(CANVAS_RESOLUTION)
         self.clock = pygame.time.Clock()
