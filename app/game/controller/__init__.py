@@ -1,7 +1,7 @@
 import pygame
 from typing import List, Optional
 
-from pythonic_poker_sdk import PlayerIdentity, GameState
+from pythonic_poker_sdk import PlayerIdentity, GameState, PokerPhaseEnum
 from app.constants.display import CANVAS_RESOLUTION, DISPLAY_RESOLUTION, FRAMES_PER_SECOND
 from .game_logic import game_logic
 from .types import View, VALID_VIEWS
@@ -74,7 +74,6 @@ class GameController:
 
             elif event.type == PythonicPokerEvent.ENTER_LOBBY.value:
                 self.lobby_id = event.lobby_id
-                print("entering lobby: ", event.lobby_id)
                 # TODO: mv join_lobby call out of view (join/host lobby split)
                 start_watch_state_thread(self.connection.stub, self.player)
 
@@ -89,7 +88,22 @@ class GameController:
             elif event.type == PythonicPokerEvent.STATE_UPDATE.value:
                 self.game_state = event.state
                 print(event.state) # DEBUG
-
+                phase: Optional[PokerPhaseEnum] = PokerPhaseEnum.from_game_state(event.state)
+                if phase == PokerPhaseEnum.Ante:
+                    self.set_view("poker-ante")
+                elif phase == PokerPhaseEnum.Dealing:
+                    self.set_view("poker-dealing")
+                elif phase == PokerPhaseEnum.FirstBetting:
+                    self.set_view("poker-betting")
+                elif phase == PokerPhaseEnum.Drawing:
+                    self.set_view("poker-drawing")
+                elif phase == PokerPhaseEnum.SecondBetting:
+                    self.set_view("poker-betting")
+                elif phase == PokerPhaseEnum.Showdown:
+                    # TODO: stay here until player explicitly leaves or sth
+                    self.set_view("poker-showdown")
+                else:
+                    self.set_view("lobby")
             else:
                 self.view_events.append(event)
 
