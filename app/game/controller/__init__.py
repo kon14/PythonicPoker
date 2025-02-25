@@ -4,8 +4,8 @@ from typing import List, Optional
 from pythonic_poker_sdk import PlayerIdentity, GameState, PokerPhaseEnum
 from app.constants.display import CANVAS_RESOLUTION, DISPLAY_RESOLUTION, FRAMES_PER_SECOND
 from .game_logic import game_logic
-from .types import View, VALID_VIEWS
 from .watch_state import start_watch_state_thread
+from ..views.types import View, VALID_VIEWS
 from ..connection import ServerConnection
 from ..events import PythonicPokerEvent
 

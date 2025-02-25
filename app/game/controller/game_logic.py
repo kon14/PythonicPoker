@@ -4,7 +4,7 @@ from typing import Callable, List
 from pythonic_poker_sdk import RusticPokerStub, PlayerIdentity, list_lobbies_rpc, connect_rpc
 
 from app.game import views
-from .types import View
+from ..views.types import View
 from ..connection import ServerConnection, get_server_connection
 from ..player import get_peer_address
 from ..events import PythonicPokerEvent

@@ -2,7 +2,7 @@ import pygame
 from enum import Enum
 
 from pythonic_poker_sdk import GameState
-from ..controller.types import View
+from ..views.types import View
 
 
 class PythonicPokerEvent(Enum):
