@@ -1,7 +1,7 @@
 import pygame
 from typing import Callable, List, Tuple, Optional
 
-from pythonic_poker_sdk import RusticPokerStub, host_lobby_rpc, PlayerIdentity
+from pythonic_poker_sdk import RusticPokerStub, host_lobby_rpc, PlayerIdentity, LobbyInfoPublic
 from app.game.connection import ServerConnection
 from app.components import Button, TextInput
 from app.constants.color import *
@@ -22,7 +22,7 @@ input_txt_lobby_name: Optional[TextInput] = None
 def act(
     conn: ServerConnection,
     player: PlayerIdentity,
-    on_lobby_host: Callable[[], None],
+    on_lobby_host: Callable[[str], None],
     on_cancel: Callable[[], None],
 ):
     host_lobby = lambda lobby_name : __host_lobby(conn, player, lobby_name, on_lobby_host)
@@ -47,20 +47,20 @@ def __host_lobby(
     conn: ServerConnection,
     player: PlayerIdentity,
     lobby_name: str,
-    on_lobby_host: Callable[[], None],
+    on_lobby_host: Callable[[str], None],
 ):
     global input_txt_lobby_name
     assert input_txt_lobby_name is not None
 
     try:
-        host_lobby_rpc(conn.stub, player, lobby_name)
+        res: LobbyInfoPublic = host_lobby_rpc(conn.stub, player, lobby_name)
     except Exception as err:
         print(f"Failed to host lobby ({lobby_name})!")
         print(err)
         return
 
     input_txt_lobby_name.clear()
-    on_lobby_host()
+    on_lobby_host(res.lobby_id)
 
 
 def __cancel(on_cancel: Callable[[], None]):

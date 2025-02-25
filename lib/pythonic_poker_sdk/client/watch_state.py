@@ -24,6 +24,4 @@ def watch_state_rpc(
     )
 
     for state in game_state_stream:
-        # This is only writing to stdout as a demonstration...
-        print(state)
-        pass
+        yield state

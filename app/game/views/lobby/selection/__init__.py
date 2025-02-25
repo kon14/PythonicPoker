@@ -23,7 +23,7 @@ CELL_PADDING = 10
 def act(
     conn: ServerConnection,
     player: PlayerIdentity,
-    on_lobby_join: Callable[[], None],
+    on_lobby_join: Callable[[str], None],
     on_lobby_host: Callable[[], None],
 ):
     lobbies_res = __poll_data(conn)
@@ -59,7 +59,7 @@ def __join_lobby(
     conn: ServerConnection,
     player: PlayerIdentity,
     lobby_id: str,
-    on_lobby_join: Callable[[], None],
+    on_lobby_join: Callable[[str], None],
 ):
     try:
         join_lobby_rpc(conn.stub, player, lobby_id)
@@ -67,7 +67,7 @@ def __join_lobby(
         print(f"Failed to join lobby ({lobby_id})!")
         print(err)
         return
-    on_lobby_join()
+    on_lobby_join(lobby_id)
 
 
 def __draw_table(

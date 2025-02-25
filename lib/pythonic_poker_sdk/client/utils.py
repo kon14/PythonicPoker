@@ -8,7 +8,8 @@ def call_with_metadata(
 ):
     metadata = [("peer-address", peer_address)]
     response = method(request=request, metadata=metadata)
-    return preserve_omitted_fields(response)
+    # return preserve_omitted_fields(response) # TODO
+    return response
 
 
 def call(
