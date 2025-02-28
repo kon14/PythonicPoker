@@ -5,7 +5,7 @@ from ..types import PlayerIdentity
 from .utils import call_with_metadata
 
 
-def start_lobby_rpc(
+def start_lobby_game_rpc(
     stub: RusticPokerStub,
     player: PlayerIdentity,
 ):

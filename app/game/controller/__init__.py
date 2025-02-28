@@ -1,7 +1,8 @@
 import pygame
 from typing import List, Optional
 
-from pythonic_poker_sdk import PlayerIdentity, GameState, PokerPhaseEnum
+from pythonic_poker_sdk import PlayerIdentity, GameState, PokerPhaseEnum, \
+    set_lobby_matchmaking_status_rpc, respond_lobby_matchmaking_rpc, start_lobby_game_rpc
 from app.constants.display import CANVAS_RESOLUTION, DISPLAY_RESOLUTION, FRAMES_PER_SECOND
 from .game_logic import game_logic
 from .watch_state import start_watch_state_thread
@@ -56,6 +57,7 @@ class GameController:
                 canvas=self.canvas,
                 connection=self.connection,
                 player=self.player,
+                game_state=self.game_state,
                 events=self.view_events.copy(),
             )
 
@@ -104,6 +106,36 @@ class GameController:
                     self.set_view("poker-showdown")
                 else:
                     self.set_view("lobby")
+
+            elif event.type == PythonicPokerEvent.SET_LOBBY_MATCHMAKING.value:
+                try:
+                    set_lobby_matchmaking_status_rpc(
+                        stub=self.connection.stub,
+                        player=self.player,
+                        matchmaking=event.matchmaking,
+                    )
+                except Exception as err:
+                    print(err)
+
+            elif event.type == PythonicPokerEvent.RESPOND_LOBBY_MATCHMAKING.value:
+                try:
+                    respond_lobby_matchmaking_rpc(
+                        stub=self.connection.stub,
+                        player=self.player,
+                        accept=event.accept_match,
+                    )
+                except Exception as err:
+                    print(err)
+
+            elif event.type == PythonicPokerEvent.START_LOBBY_MATCH.value:
+                try:
+                    start_lobby_game_rpc(
+                        stub=self.connection.stub,
+                        player=self.player,
+                    )
+                except Exception as err:
+                    print(err)
+
             else:
                 self.view_events.append(event)
 

@@ -1,7 +1,7 @@
 import pygame
 from typing import Callable, List, Tuple, Optional
 
-from pythonic_poker_sdk import RusticPokerStub, host_lobby_rpc, PlayerIdentity, LobbyInfoPublic
+from pythonic_poker_sdk import host_lobby_rpc, PlayerIdentity, LobbyInfoPublic
 from app.game.connection import ServerConnection
 from app.components import Button, TextInput
 from app.constants.color import *
@@ -87,8 +87,8 @@ def __draw_form(
     __draw_cancel_btn(canvas, cancel, (100, y_offset))
 
     # Draw Field Label
-    cell_text = font.render("Lobby Name:", True, BLACK_COLOR)
-    canvas.blit(cell_text, (300, y_offset))
+    text = font.render("Lobby Name:", True, BLACK_COLOR)
+    canvas.blit(text, (300, y_offset))
     y_offset += 20 + 10
 
     # Draw Text Input

@@ -1,7 +1,7 @@
 import pygame
-from typing import Callable, List
+from typing import Callable, List, Optional
 
-from pythonic_poker_sdk import RusticPokerStub, PlayerIdentity, list_lobbies_rpc, connect_rpc
+from pythonic_poker_sdk import PlayerIdentity, connect_rpc, GameState
 
 from app.game import views
 from ..views.types import View
@@ -15,8 +15,9 @@ def game_logic(
     set_connection: Callable[[ServerConnection], None],
     set_player: Callable[[PlayerIdentity], None],
     canvas: pygame.Surface,
-    connection: ServerConnection | None,
-    player: PlayerIdentity | None,
+    connection: Optional[ServerConnection],
+    player: Optional[PlayerIdentity],
+    game_state: Optional[GameState],
     events: List[pygame.event.Event],
 ):
     if view == "server-selection":
@@ -31,6 +32,9 @@ def game_logic(
         connect_rpc(connection.stub, player)
         set_player(player)
         PythonicPokerEvent.set_view("lobby-selection")
+        # TODO: Application Crash Recovery
+        # check player in-game status
+        # if in-game: send START_LOBBY_MATCH event (proc watch stream)
 
     elif view == "lobby-selection":
         assert connection is not None
@@ -69,7 +73,13 @@ def game_logic(
     elif view == "lobby":
         assert connection is not None
         assert player is not None
-        pass
+        if game_state is None:
+            # Waiting for WatchState stream
+            return
+        assert game_state is not None
+        data = views.lobby.inner.act(game_state)
+        views.lobby.inner.handle_events(events)
+        views.lobby.inner.render(data, canvas)
 
     elif view == "poker-ante":
         assert connection is not None

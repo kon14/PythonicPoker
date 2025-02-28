@@ -11,6 +11,9 @@ class PythonicPokerEvent(Enum):
     LEAVE_LOBBY = pygame.USEREVENT + 2
     SET_VIEW = pygame.USEREVENT + 3
     STATE_UPDATE = pygame.USEREVENT + 4
+    SET_LOBBY_MATCHMAKING = pygame.USEREVENT + 5
+    RESPOND_LOBBY_MATCHMAKING = pygame.USEREVENT + 6
+    START_LOBBY_MATCH = pygame.USEREVENT + 7
 
 
     @staticmethod
@@ -34,4 +37,22 @@ class PythonicPokerEvent(Enum):
     @staticmethod
     def state_update(state: GameState):
         event = pygame.event.Event(PythonicPokerEvent.STATE_UPDATE.value, state=state)
+        pygame.event.post(event)
+
+
+    @staticmethod
+    def set_lobby_matchmaking(matchmaking: bool):
+        event = pygame.event.Event(PythonicPokerEvent.SET_LOBBY_MATCHMAKING.value, matchmaking=matchmaking)
+        pygame.event.post(event)
+
+
+    @staticmethod
+    def respond_lobby_matchmaking(accept_match: bool):
+        event = pygame.event.Event(PythonicPokerEvent.RESPOND_LOBBY_MATCHMAKING.value, accept_match=accept_match)
+        pygame.event.post(event)
+
+
+    @staticmethod
+    def start_lobby_match():
+        event = pygame.event.Event(PythonicPokerEvent.START_LOBBY_MATCH.value)
         pygame.event.post(event)

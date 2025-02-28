@@ -19,15 +19,24 @@ class Button:
         self.handler = handler
 
 
-    def draw(self, canvas):
+    def draw(self, canvas: pygame.Surface):
         canvas.blit(self.surf, self.rect)
 
+
+    # TODO: handle register/unregister_event_handler() via self.disabled
 
     def register_event_handler(
         self,
         event_handlers: Dict[str, Callable[[pygame.event.Event], None]],
     ):
         event_handlers[self.id] = self.__check_click
+
+
+    def unregister_event_handler(
+        self,
+        event_handlers: Dict[str, Callable[[pygame.event.Event], None]],
+    ):
+        event_handlers.pop(self.id, None)
 
 
     def __check_click(self, event: pygame.event.Event):

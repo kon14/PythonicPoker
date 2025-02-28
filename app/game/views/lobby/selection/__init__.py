@@ -1,12 +1,13 @@
 import pygame
 from typing import Collection, Callable, List, Tuple
 
-from pythonic_poker_sdk import RusticPokerStub, LobbyInfoPublic, LobbyStatus, list_lobbies_rpc, join_lobby_rpc, PlayerIdentity
+from pythonic_poker_sdk import LobbyInfoPublic, LobbyStatus, list_lobbies_rpc, join_lobby_rpc, PlayerIdentity
 from app.game.connection import ServerConnection
 from app.components import Button
 from app.constants import CANVAS_RESOLUTION
 from app.constants.color import *
 from app.utils import truncate_text
+
 
 # Data
 POLL_INTERVAL_MS = 500
