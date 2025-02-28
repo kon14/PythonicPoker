@@ -3,7 +3,7 @@
 <a href="https://github.com/kon14/RusticPoker" target="_blank">
     <h1>PythonicPoker 🃏</h1>
 </a>
-<h3>A reference client implementation of <a href="https://github.com/kon14/RusticPoker" target="_blank"><strong>PythonicPoker</strong></a></h3>
+<h3>A reference client implementation of <a href="https://github.com/kon14/RusticPoker" target="_blank"><strong>RusticPoker</strong></a></h3>
 </div>
 
 <hr />
@@ -17,13 +17,21 @@ For more details on the server, including the gRPC server implementation and the
 ## Building 🔨 <a name="building"></a>
 
 ``` bash
-# Dependency Installation
+# Library Dependency Installation
+cd lib
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
+python3 pythonic_poker_sdk/rpc/generate.py
 
-# Istall pythonic_poker_sdk in Editable Mode
-cd lib && pytho3 pip install -e . && cd -
+# Application Dependency Installation
+cd ../app
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+cd ../lib
+python3 -m pip install -e .
+cd -
 ```
 
 ## Running 💻 <a name="running"></a>

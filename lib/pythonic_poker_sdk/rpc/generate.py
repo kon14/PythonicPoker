@@ -40,6 +40,6 @@ def generate_grpc_client():
     print("gRPC client code generated successfully!")
 
 
-#fetch_proto_file()
+fetch_proto_file()
 
 generate_grpc_client()
