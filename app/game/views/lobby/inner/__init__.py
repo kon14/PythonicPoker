@@ -11,9 +11,6 @@ from app.game.events import PythonicPokerEvent
 # Data
 event_handlers = {}
 
-# Rendering
-BTN_BG_COLOR = (255, 255, 50)
-
 
 class LobbyInnerViewRenderArgs(NamedTuple):
     lobby_settings: LobbySettings
@@ -200,22 +197,18 @@ def __draw_enable_matchmaking_btn(
     pos: Tuple[int, int],
     disabled: bool,
 ):
-    btn_surf = Button.build_surf("Enable Matchmaking", BLACK_COLOR, BTN_BG_COLOR, 20, 5)
     btn = Button(
         id="btn-lobby-enable-matchmaking",
-        surf=btn_surf,
+        text="Enable Matchmaking",
         pos=pos,
+        event_handlers=event_handlers,
         handler=enable_matchmaking_handler,
     )
-    # TODO: refactor event handler registration
     if disabled:
-        btn.unregister_event_handler(event_handlers)
+        btn.disable()
     else:
-        btn.register_event_handler(event_handlers)
-    btn.draw(
-        canvas,
-        # disabled=disabled,  # TODO
-    )
+        btn.enable()
+    btn.draw(canvas)
 
 
 def __draw_disable_matchmaking_btn(
@@ -224,22 +217,18 @@ def __draw_disable_matchmaking_btn(
     pos: Tuple[int, int],
     disabled: bool,
 ):
-    btn_surf = Button.build_surf("Disable Matchmaking", BLACK_COLOR, BTN_BG_COLOR, 20, 5)
     btn = Button(
         id="btn-lobby-disable-matchmaking",
-        surf=btn_surf,
+        text="Disable Matchmaking",
         pos=pos,
+        event_handlers=event_handlers,
         handler=disable_matchmaking_handler,
     )
-    # TODO: refactor event handler registration
     if disabled:
-        btn.unregister_event_handler(event_handlers)
+        btn.disable()
     else:
-        btn.register_event_handler(event_handlers)
-    btn.draw(
-        canvas,
-        # disabled=disabled,  # TODO
-    )
+        btn.enable()
+    btn.draw(canvas)
 
 
 def __draw_start_match_btn(
@@ -248,22 +237,18 @@ def __draw_start_match_btn(
     pos: Tuple[int, int],
     disabled: bool,
 ):
-    btn_surf = Button.build_surf("Start Match", BLACK_COLOR, BTN_BG_COLOR, 20, 5)
     btn = Button(
         id="btn-lobby-start-match",
-        surf=btn_surf,
+        text="Start Match",
         pos=pos,
+        event_handlers=event_handlers,
         handler=start_match_handler,
     )
-    # TODO: refactor event handler registration
     if disabled:
-        btn.unregister_event_handler(event_handlers)
+        btn.disable()
     else:
-        btn.register_event_handler(event_handlers)
-    btn.draw(
-        canvas,
-        # disabled=disabled,  # TODO
-    )
+        btn.enable()
+    btn.draw(canvas)
 
 
 def __draw_accept_matchmaking_btn(
@@ -272,22 +257,18 @@ def __draw_accept_matchmaking_btn(
     pos: Tuple[int, int],
     disabled: bool,
 ):
-    btn_surf = Button.build_surf("Accept Match", BLACK_COLOR, BTN_BG_COLOR, 20, 5)
     btn = Button(
         id="btn-lobby-accept-match",
-        surf=btn_surf,
+        text="Accept Match",
         pos=pos,
+        event_handlers=event_handlers,
         handler=accept_match_handler,
     )
-    # TODO: refactor event handler registration
     if disabled:
-        btn.unregister_event_handler(event_handlers)
+        btn.disable()
     else:
-        btn.register_event_handler(event_handlers)
-    btn.draw(
-        canvas,
-        # disabled=disabled,  # TODO
-    )
+        btn.enable()
+    btn.draw(canvas)
 
 
 def __draw_decline_matchmaking_btn(
@@ -296,22 +277,18 @@ def __draw_decline_matchmaking_btn(
     pos: Tuple[int, int],
     disabled: bool,
 ):
-    btn_surf = Button.build_surf("Decline Match", BLACK_COLOR, BTN_BG_COLOR, 20, 5)
     btn = Button(
         id="btn-lobby-decline-match",
-        surf=btn_surf,
+        text="Decline Match",
         pos=pos,
+        event_handlers=event_handlers,
         handler=decline_match_handler,
     )
-    # TODO: refactor event handler registration
     if disabled:
-        btn.unregister_event_handler(event_handlers)
+        btn.disable()
     else:
-        btn.register_event_handler(event_handlers)
-    btn.draw(
-        canvas,
-        # disabled=disabled,  # TODO
-    )
+        btn.enable()
+    btn.draw(canvas)
 
 
 def __draw_lobby_settings(

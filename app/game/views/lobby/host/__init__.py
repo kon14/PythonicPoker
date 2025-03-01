@@ -11,8 +11,6 @@ from app.constants.color import *
 event_handlers = {}
 
 # Rendering
-HOST_LOBBY_BTN_BG_COLOR = (0, 255, 50)
-CANCEL_BTN_BG_COLOR = (200, 100, 100)
 TEXT_INPUT_NAME_DIMENSIONS = (500, 80)
 
 
@@ -121,15 +119,14 @@ def __draw_cancel_btn(
     cancel_handler: Callable[[], None],
     pos: Tuple[int, int],
 ):
-    cancel_btn_surf = Button.build_surf("< Back", BLACK_COLOR, CANCEL_BTN_BG_COLOR, 20, 5)
-    cancel_btn = Button(
+    btn = Button(
         id="btn-cancel",
-        surf=cancel_btn_surf,
+        text="< Back",
         pos=pos,
+        event_handlers=event_handlers,
         handler=cancel_handler,
     )
-    cancel_btn.register_event_handler(event_handlers)
-    cancel_btn.draw(canvas)
+    btn.draw(canvas)
 
 
 def __draw_submit_btn(
@@ -137,12 +134,11 @@ def __draw_submit_btn(
     host_lobby_handler: Callable[[], None],
     pos: Tuple[int, int],
 ):
-    submit_btn_surf = Button.build_surf("Host Lobby", BLACK_COLOR, HOST_LOBBY_BTN_BG_COLOR, 20, 5)
-    submit_btn = Button(
+    btn = Button(
         id="btn-lobby-new",
-        surf=submit_btn_surf,
+        text="Host Lobby",
         pos=pos,
+        event_handlers=event_handlers,
         handler=host_lobby_handler,
     )
-    submit_btn.register_event_handler(event_handlers)
-    submit_btn.draw(canvas)
+    btn.draw(canvas)

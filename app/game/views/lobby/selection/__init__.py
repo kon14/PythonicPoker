@@ -16,8 +16,6 @@ last_lobbies_res = None
 event_handlers = {}
 
 # Rendering
-HOST_LOBBY_BTN_BG_COLOR = (0, 255, 50)
-JOIN_LOBBY_BTN_BG_COLOR = (255, 100, 0)
 CELL_PADDING = 10
 
 
@@ -108,7 +106,8 @@ def __draw_table(
             if key == "":
                 # Join Button
                 # TODO: only show btn for join-able lobbies
-                __draw_join_btn(canvas, lobby.lobby_id, join_lobby, (x_offset, y_offset))
+                join_lobby_handler = lambda: join_lobby(lobby.lobby_id)
+                __draw_join_btn(canvas, lobby.lobby_id, join_lobby_handler, (x_offset, y_offset))
             else:
                 value = getattr(lobby, key)
                 if isinstance(value, str):
@@ -127,30 +126,27 @@ def __draw_host_btn(
     host_lobby_handler: Callable[[], None],
     pos: Tuple[int, int],
 ):
-    create_btn_surf = Button.build_surf("Host Lobby", BLACK_COLOR, HOST_LOBBY_BTN_BG_COLOR, 20, 5)
-    create_btn = Button(
+    btn = Button(
         id="btn-lobby-host",
-        surf=create_btn_surf,
+        text="Host Lobby",
         pos=pos,
+        event_handlers=event_handlers,
         handler=host_lobby_handler,
     )
-    create_btn.register_event_handler(event_handlers)
-    create_btn.draw(canvas)
+    btn.draw(canvas)
 
 
 def __draw_join_btn(
     canvas: pygame.Surface,
     lobby_id: str,
-    join_lobby: Callable[[str], None],
+    join_lobby_handler: Callable[[], None],
     pos: Tuple[int, int],
 ):
-    join_btn_handler = lambda: join_lobby(lobby_id)
-    join_btn_surf = Button.build_surf("Join", BLACK_COLOR, JOIN_LOBBY_BTN_BG_COLOR, 20, 5)
-    join_btn = Button(
-        id=f"btn-lobby-{lobby_id}",
-        surf=join_btn_surf,
+    btn = Button(
+        id=f"btn-lobby-join-{lobby_id}",
+        text="Join",
         pos=pos,
-        handler=join_btn_handler,
+        event_handlers=event_handlers,
+        handler=join_lobby_handler,
     )
-    join_btn.register_event_handler(event_handlers)  # TODO: cleanup dead lobbies...
-    join_btn.draw(canvas)
+    btn.draw(canvas)
