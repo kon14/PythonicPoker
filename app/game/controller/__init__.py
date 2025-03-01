@@ -2,9 +2,10 @@ import pygame
 from typing import List, Optional
 
 from pythonic_poker_sdk import PlayerIdentity, GameState, PokerPhaseEnum, \
-    set_lobby_matchmaking_status_rpc, respond_lobby_matchmaking_rpc, start_lobby_game_rpc
+    host_lobby_rpc, join_lobby_rpc, set_lobby_matchmaking_status_rpc, respond_lobby_matchmaking_rpc, \
+    start_lobby_game_rpc, LobbyInfoPublic
 from app.constants.display import CANVAS_RESOLUTION, DISPLAY_RESOLUTION, FRAMES_PER_SECOND
-from .game_logic import game_logic
+from .view_renderer import game_logic
 from .watch_state import start_watch_state_thread
 from ..views.types import View, VALID_VIEWS
 from ..connection import ServerConnection
@@ -74,9 +75,27 @@ class GameController:
             if event.type == pygame.QUIT:
                 self.running = False
 
-            elif event.type == PythonicPokerEvent.ENTER_LOBBY.value:
+            elif event.type == PythonicPokerEvent.HOST_LOBBY.value:
+                try:
+                    res: LobbyInfoPublic = host_lobby_rpc(self.connection.stub, self.player, event.lobby_name)
+                except Exception as err:
+                    print(f"Failed to host lobby ({event.lobby_name})!")
+                    print(err)
+                    return
+
+                self.lobby_id = res.lobby_id
+                self.set_view("lobby")
+                start_watch_state_thread(self.connection.stub, self.player)
+
+            elif event.type == PythonicPokerEvent.JOIN_LOBBY.value:
+                try:
+                    join_lobby_rpc(self.connection.stub, self.player, event.lobby_id)
+                except Exception as err:
+                    print(f"Failed to join lobby ({event.lobby_id})!")
+                    print(err)
+                    return
                 self.lobby_id = event.lobby_id
-                # TODO: mv join_lobby call out of view (join/host lobby split)
+                self.set_view("lobby")
                 start_watch_state_thread(self.connection.stub, self.player)
 
             elif event.type == PythonicPokerEvent.LEAVE_LOBBY.value:

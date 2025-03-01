@@ -1,8 +1,7 @@
 import pygame
-from typing import Callable, List, Tuple, Optional
+from typing import Callable, List, Tuple, Optional, NamedTuple
 
-from pythonic_poker_sdk import host_lobby_rpc, PlayerIdentity, LobbyInfoPublic
-from app.game.connection import ServerConnection
+from app.game.events import PythonicPokerEvent
 from app.components import Button, TextInput
 from app.constants.color import *
 
@@ -17,21 +16,27 @@ TEXT_INPUT_NAME_DIMENSIONS = (500, 80)
 input_txt_lobby_name: Optional[TextInput] = None
 
 
-def act(
-    conn: ServerConnection,
-    player: PlayerIdentity,
-    on_lobby_host: Callable[[str], None],
-    on_cancel: Callable[[], None],
-):
-    host_lobby = lambda lobby_name : __host_lobby(conn, player, lobby_name, on_lobby_host)
-    cancel = lambda : __cancel(on_cancel)
-    return (host_lobby, cancel)
+class LobbyHostViewRenderArgs(NamedTuple):
+    host_lobby_handler: Callable[[str], None]
+    cancel_handler: Callable[[], None]
 
 
-def render(data, canvas: pygame.Surface):
-    host_lobby = data[0]
-    cancel = data[1]
-    __draw_form(canvas, host_lobby, cancel)
+def act():
+    host_lobby_handler = lambda lobby_name : __host_lobby(lobby_name)
+    cancel_handler = lambda : __cancel()
+
+    return LobbyHostViewRenderArgs(
+        host_lobby_handler,
+        cancel_handler,
+    )
+
+
+def render(args: LobbyHostViewRenderArgs, canvas: pygame.Surface):
+    __draw_form(
+        canvas,
+        args.host_lobby_handler,
+        args.cancel_handler,
+    )
 
 
 def handle_events(events: List[pygame.event.Event]):
@@ -41,32 +46,20 @@ def handle_events(events: List[pygame.event.Event]):
             handler(event)
 
 
-def __host_lobby(
-    conn: ServerConnection,
-    player: PlayerIdentity,
-    lobby_name: str,
-    on_lobby_host: Callable[[str], None],
-):
+def __host_lobby(lobby_name: str):
     global input_txt_lobby_name
     assert input_txt_lobby_name is not None
 
-    try:
-        res: LobbyInfoPublic = host_lobby_rpc(conn.stub, player, lobby_name)
-    except Exception as err:
-        print(f"Failed to host lobby ({lobby_name})!")
-        print(err)
-        return
-
+    PythonicPokerEvent.host_lobby(lobby_name)
     input_txt_lobby_name.clear()
-    on_lobby_host(res.lobby_id)
 
 
-def __cancel(on_cancel: Callable[[], None]):
+def __cancel():
     global input_txt_lobby_name
     assert input_txt_lobby_name is not None
 
     input_txt_lobby_name.clear()
-    on_cancel()
+    PythonicPokerEvent.set_view("lobby-selection")
 
 
 def __draw_form(

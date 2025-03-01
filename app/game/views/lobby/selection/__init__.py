@@ -1,7 +1,9 @@
 import pygame
-from typing import Collection, Callable, List, Tuple
+from google.protobuf.internal.containers import RepeatedCompositeFieldContainer
+from typing import Collection, Callable, List, Tuple, NamedTuple
 
-from pythonic_poker_sdk import LobbyInfoPublic, LobbyStatus, list_lobbies_rpc, join_lobby_rpc, PlayerIdentity
+from pythonic_poker_sdk import LobbyInfoPublic, LobbyStatus, list_lobbies_rpc
+from app.game.events import PythonicPokerEvent
 from app.game.connection import ServerConnection
 from app.components import Button
 from app.constants import CANVAS_RESOLUTION
@@ -19,23 +21,32 @@ event_handlers = {}
 CELL_PADDING = 10
 
 
-def act(
-    conn: ServerConnection,
-    player: PlayerIdentity,
-    on_lobby_join: Callable[[str], None],
-    on_lobby_host: Callable[[], None],
-):
+class LobbySelectionViewRenderArgs(NamedTuple):
+    lobbies: RepeatedCompositeFieldContainer[LobbyInfoPublic]
+    host_lobby_handler: Callable[[], None]
+    join_lobby_handler: Callable[[str], None]
+
+
+def act(conn: ServerConnection):
     lobbies_res = __poll_data(conn)
-    join_lobby = lambda lobby_id : __join_lobby(conn, player, lobby_id, on_lobby_join)
-    host_lobby = lambda : on_lobby_host()
-    return (lobbies_res.lobbies, join_lobby, host_lobby)
+
+    host_lobby_handler = lambda : PythonicPokerEvent.set_view("lobby-creation")
+    join_lobby_handler = lambda lobby_id : PythonicPokerEvent.join_lobby(lobby_id)
+
+    return LobbySelectionViewRenderArgs(
+        lobbies_res.lobbies,
+        host_lobby_handler,
+        join_lobby_handler,
+    )
 
 
-def render(data, canvas: pygame.Surface):
-    lobbies = data[0]
-    join_lobby = data[1]
-    host_lobby = data[2]
-    __draw_table(canvas, lobbies, join_lobby, host_lobby)
+def render(args: LobbySelectionViewRenderArgs, canvas: pygame.Surface):
+    __draw_table(
+        canvas,
+        args.lobbies,
+        args.join_lobby_handler,
+        args.host_lobby_handler,
+    )
 
 
 def handle_events(events: List[pygame.event.Event]):
@@ -52,21 +63,6 @@ def __poll_data(conn: ServerConnection):
         last_lobbies_res = list_lobbies_rpc(conn.stub)
         last_call_time = current_time
     return last_lobbies_res
-
-
-def __join_lobby(
-    conn: ServerConnection,
-    player: PlayerIdentity,
-    lobby_id: str,
-    on_lobby_join: Callable[[str], None],
-):
-    try:
-        join_lobby_rpc(conn.stub, player, lobby_id)
-    except Exception as err:
-        print(f"Failed to join lobby ({lobby_id})!")
-        print(err)
-        return
-    on_lobby_join(lobby_id)
 
 
 def __draw_table(

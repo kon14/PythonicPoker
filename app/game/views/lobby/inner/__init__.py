@@ -302,7 +302,7 @@ def __draw_lobby_settings(
     game_mode_label_txt = font.render("Game Mode:", True, BLACK_COLOR)
     game_mode_value_txt = font.render(LobbySettings.GameMode.Name(lobby_settings.game_mode), True, BLACK_COLOR)
     ante_amount_label_txt = font.render("Ante Amount:", True, BLACK_COLOR)
-    ante_amount_value_txt = font.render(str(lobby_settings.ante_amount), True, BLACK_COLOR)
+    ante_amount_value_txt = font.render(f"{lobby_settings.ante_amount} credits", True, BLACK_COLOR)
     min_players_label_txt = font.render("Minimum Players:", True, BLACK_COLOR)
     min_players_value_txt = font.render(str(lobby_settings.min_players), True, BLACK_COLOR)
     max_players_label_txt = font.render("Maximum Players:", True, BLACK_COLOR)

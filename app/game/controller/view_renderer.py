@@ -39,34 +39,14 @@ def game_logic(
     elif view == "lobby-selection":
         assert connection is not None
         assert player is not None
-        on_lobby_join: Callable[[str], None] = lambda lobby_id: (
-            PythonicPokerEvent.set_view("lobby"),
-            PythonicPokerEvent.enter_lobby(lobby_id),
-        )  # TODO: mv logic out of top layer?
-        on_lobby_host = lambda: PythonicPokerEvent.set_view("lobby-creation")  # TODO: mv logic out of top layer?
-        data = views.lobby.selection.act(
-            conn=connection,
-            player=player,
-            on_lobby_join=on_lobby_join,
-            on_lobby_host=on_lobby_host,
-        )
+        data = views.lobby.selection.act(conn=connection)
         views.lobby.selection.handle_events(events)
         views.lobby.selection.render(data, canvas)
 
     elif view == "lobby-creation":
         assert connection is not None
         assert player is not None
-        on_lobby_host: Callable[[str], None] = lambda lobby_id: (
-            PythonicPokerEvent.set_view("lobby"),
-            PythonicPokerEvent.enter_lobby(lobby_id),
-        )  # TODO: mv logic out of top layer?
-        on_cancel = lambda: PythonicPokerEvent.set_view("lobby-selection")  # TODO: mv logic out of top layer?
-        data = views.lobby.host.act(
-            conn=connection,
-            player=player,
-            on_lobby_host=on_lobby_host,
-            on_cancel=on_cancel,
-        )
+        data = views.lobby.host.act()
         views.lobby.host.handle_events(events)
         views.lobby.host.render(data, canvas)
 
