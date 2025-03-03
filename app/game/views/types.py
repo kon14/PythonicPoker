@@ -1,5 +1,7 @@
 from typing import Literal
 
+# TODO: refactor as Enum + __str__() override
+
 View = Literal[
     # Initial Setup
     "server-selection",

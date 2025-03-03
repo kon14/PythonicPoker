@@ -35,3 +35,13 @@ class PokerPhaseEnum(Enum):
             if phase_value is not None:
                 return phase_enum
         return None
+
+    def __str__(self):
+        return {
+            PokerPhaseEnum.Ante: "Ante",
+            PokerPhaseEnum.Dealing: "Dealing",
+            PokerPhaseEnum.FirstBetting: "First Betting",
+            PokerPhaseEnum.Drawing: "Drawing",
+            PokerPhaseEnum.SecondBetting: "Second Betting",
+            PokerPhaseEnum.Showdown: "Showdown",
+        }[self]
