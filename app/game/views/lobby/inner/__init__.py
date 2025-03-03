@@ -29,13 +29,13 @@ def act(
     game_state: GameState,
 ) -> LobbyInnerViewRenderArgs:
     lobby_settings = game_state.lobby_state.settings
-    self_id = game_state.player_state.player_id
+    self_id = game_state.self_player_id
     is_lobby_host = game_state.lobby_state.host_player_id == self_id
     lobby_status = game_state.lobby_state.status
     match_may_start = \
         lobby_status is LobbyStatus.MATCHMAKING \
         and len(game_state.lobby_state.game_acceptance) >= lobby_settings.min_players \
-        and len(game_state.lobby_state.game_acceptance) == len(game_state.lobby_state.player_ids)
+        and len(game_state.lobby_state.game_acceptance) == len(game_state.lobby_state.players)
     player_acceptance = game_state.lobby_state.game_acceptance
 
     enable_matchmaking_handler: Callable[[], None] = lambda : PythonicPokerEvent.set_lobby_matchmaking(matchmaking=True)

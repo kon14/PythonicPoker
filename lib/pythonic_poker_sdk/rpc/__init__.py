@@ -14,7 +14,7 @@ from .gen.rustic_poker_pb2 import \
 # PokerHandRank, \
 # ShowdownPotDistribution, \
 from .gen.rustic_poker_pb2 import \
-    PlayerState, \
+    PlayerPublicInfo, \
     LobbyState, \
     LobbyStatus, \
     LobbySettings

@@ -1,4 +1,4 @@
 from .lobby import *
-from .match import *
+from .game import *
 from .player import *
 from .server import *
