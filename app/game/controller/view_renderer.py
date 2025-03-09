@@ -65,31 +65,31 @@ def game_logic(
         assert connection is not None
         assert player is not None
         # TODO
-        views.game.ante.render(canvas)
+        views.game.ante.render(canvas, game_state)
 
     elif view == "poker-dealing":
         assert connection is not None
         assert player is not None
         # TODO
-        views.game.dealing.render(canvas)
+        views.game.dealing.render(canvas, game_state)
 
     elif view == "poker-betting":
         assert connection is not None
         assert player is not None
         # TODO
-        views.game.betting.render(canvas)
+        views.game.betting.render(canvas, game_state)
 
     elif view == "poker-drawing":
         assert connection is not None
         assert player is not None
         # TODO
-        views.game.drawing.render(canvas)
+        views.game.drawing.render(canvas, game_state)
 
     elif view == "poker-showdown":
         assert connection is not None
         assert player is not None
         # TODO
-        views.game.showdown.render(canvas)
+        views.game.showdown.render(canvas, game_state)
 
     else:
         print("Invalid view specified!")
