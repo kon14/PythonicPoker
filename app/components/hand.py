@@ -20,6 +20,7 @@ class Hand:
             self.cards.append(card_obj)
 
 
+    @staticmethod
     def build(cards: RepeatedCompositeFieldContainer[GameState.MatchState.MatchStatePlayerPublicInfo.HandCard]) -> Optional["Hand"]:
         if len(cards) == 0:
             return None
@@ -30,3 +31,11 @@ class Hand:
         for card in self.cards:
             card.draw(canvas, pos)
             pos = [pos[0] + CARD_DIMENSIONS[0] + GAP_X_PX, pos[1]]
+
+
+    @staticmethod
+    def get_size() -> Tuple[int, int]:
+        len_cards = 5
+        width = len_cards * CARD_DIMENSIONS[0] + max(len_cards - 1, 0) * GAP_X_PX
+        height = CARD_DIMENSIONS[1]
+        return width, height
