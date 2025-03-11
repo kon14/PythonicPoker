@@ -23,8 +23,7 @@ class PlayerData:
     ):
         player_info = match_state.player_info.get(player_id)
         self.hand: Optional[Hand] = Hand.build(player_info.hand_cards)
-        self.active = True
-        # self.active = match_state.can_i_act # TODO: Need to know whether everyone else is active for this...
+        self.active = player_id in match_state.active_player_ids
         self.player_name: str = player_info.player_name
         self.bet_amount = match_state.player_bet_amounts.get(player_id, 0)
 
