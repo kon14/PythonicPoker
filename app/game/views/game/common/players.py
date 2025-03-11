@@ -1,4 +1,6 @@
 import pygame
+from google.protobuf.internal.containers import RepeatedScalarFieldContainer
+from copy import deepcopy
 from typing import Tuple, Dict, List
 
 from pythonic_poker_sdk.types import GameState
@@ -45,9 +47,12 @@ def render_players(canvas: pygame.Surface, game_state: GameState):
             player_data.draw(canvas, pos)
 
 
-def __get_player_queue(game_state: GameState):
-    # TODO: tmp-impl, server not currently propagating ordered players
+def __get_player_queue(game_state: GameState) -> RepeatedScalarFieldContainer[str]:
     self_player_id = game_state.self_player_id
-    player_queue = [self_player_id]
-    player_queue += [player.player_id for player in game_state.lobby_state.players if player.player_id != self_player_id]
-    return player_queue
+    table_players_order = deepcopy(game_state.match_state.table_players_order)
+    while True:
+        if table_players_order[0] == self_player_id:
+            return table_players_order
+        else:
+            head = table_players_order.pop()
+            table_players_order.append(head)
