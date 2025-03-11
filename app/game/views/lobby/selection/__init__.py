@@ -8,7 +8,7 @@ from app.game.connection import ServerConnection
 from app.components import Button
 from app.constants import CANVAS_RESOLUTION
 from app.constants.color import *
-from app.utils import truncate_text
+from app.utils import truncate_text, deep_getattr
 
 
 # Data
@@ -72,8 +72,8 @@ def __draw_table(
     host_lobby: Callable[[], None],
 ):
     global event_handlers
-    headers = ["Lobby Name", "Host Player", "Player Count", "Lobby Status"]
-    col_widths = [400, 400, 150, 200, 200]
+    headers = ["Lobby Name", "Host Player", "Min Players", "Max Players", "Player Count", "Lobby Status"]
+    col_widths = [300, 230, 150, 150, 150, 150, 200]
     font = pygame.font.SysFont("Arial", 20)
     canvas.fill(WHITE_COLOR)
 
@@ -96,18 +96,22 @@ def __draw_table(
     y_offset += 40
     for lobby in lobbies:
         text_col_y_offset = 5
-        # TODO: host_player_id -> host_player_name
-        for col, key in enumerate(["name", "host_player_id", "player_count", "status", ""]):
+        for col, key in enumerate(["name", "host_player.player_name", "settings.min_players", "settings.max_players", "player_count", "status", ""]):
             x_offset = sum(col_widths[:col]) + (CELL_PADDING * (col + 1))
             if key == "":
                 # Join Button
-                # TODO: only show btn for join-able lobbies
                 join_lobby_handler = lambda: join_lobby(lobby.lobby_id)
-                __draw_join_btn(canvas, lobby.lobby_id, join_lobby_handler, (x_offset, y_offset))
+                __draw_join_btn(
+                    canvas,
+                    lobby.lobby_id,
+                    lobby.is_joinable,
+                    join_lobby_handler,
+                    (x_offset, y_offset),
+                )
             else:
-                value = getattr(lobby, key)
+                value = deep_getattr(lobby, key)
                 if isinstance(value, str):
-                    value = truncate_text(getattr(lobby, key), 25)
+                    value = truncate_text(value, 25)
                 if key == "status":
                     value = LobbyStatus.Name(value)
                 cell_text = font.render(str(value), True, BLACK_COLOR)
@@ -135,6 +139,7 @@ def __draw_host_btn(
 def __draw_join_btn(
     canvas: pygame.Surface,
     lobby_id: str,
+    is_joinable: bool,
     join_lobby_handler: Callable[[], None],
     pos: Tuple[int, int],
 ):
@@ -145,4 +150,8 @@ def __draw_join_btn(
         event_handlers=event_handlers,
         handler=join_lobby_handler,
     )
+    if is_joinable:
+        btn.enable()
+    else:
+        btn.disable()
     btn.draw(canvas)
