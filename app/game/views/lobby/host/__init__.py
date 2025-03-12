@@ -11,6 +11,7 @@ event_handlers = {}
 
 # Rendering
 TEXT_INPUT_NAME_DIMENSIONS = (500, 80)
+BACKGROUND_COLOR = (20, 20, 20)
 
 
 input_txt_lobby_name: Optional[TextInput] = None
@@ -69,7 +70,7 @@ def __draw_form(
 ):
     global input_txt_lobby_name
     font = pygame.font.SysFont("Arial", 20)
-    canvas.fill(WHITE_COLOR)
+    canvas.fill(BACKGROUND_COLOR)
 
     starting_y_offset = 60
     y_offset = starting_y_offset
@@ -78,7 +79,7 @@ def __draw_form(
     __draw_cancel_btn(canvas, cancel, (100, y_offset))
 
     # Draw Field Label
-    text = font.render("Lobby Name:", True, BLACK_COLOR)
+    text = font.render("Lobby Name:", True, WHITE_COLOR)
     canvas.blit(text, (300, y_offset))
     y_offset += 20 + 10
 
@@ -101,6 +102,7 @@ def __draw_lobby_name_txt_input(canvas: pygame.Surface, pos: Tuple[int, int]):
             id="txt-input-lobby-name",
             rect=rect,
             max_length=20,
+            txt_color=WHITE_COLOR,
         )
         input_txt_lobby_name.register_event_handler(event_handlers)
     assert input_txt_lobby_name is not None

@@ -19,6 +19,7 @@ event_handlers = {}
 
 # Rendering
 CELL_PADDING = 10
+BACKGROUND_COLOR = (20, 20, 20)
 
 
 class LobbySelectionViewRenderArgs(NamedTuple):
@@ -75,7 +76,7 @@ def __draw_table(
     headers = ["Lobby Name", "Host Player", "Min Players", "Max Players", "Player Count", "Lobby Status"]
     col_widths = [300, 230, 150, 150, 150, 150, 200]
     font = pygame.font.SysFont("Arial", 20)
-    canvas.fill(WHITE_COLOR)
+    canvas.fill(BACKGROUND_COLOR)
 
     starting_y_offset = 60
     y_offset = starting_y_offset
@@ -84,18 +85,19 @@ def __draw_table(
     __draw_host_btn(canvas, host_lobby, (1140, 10))
 
     # Draw Table Header
+    y_offset += 5
     for col, header in enumerate(headers):
-        header_text = font.render(header, True, BLACK_COLOR)
+        header_text = font.render(header, True, WHITE_COLOR)
         x_offset = sum(col_widths[:col]) + (CELL_PADDING * (col + 1))
         canvas.blit(header_text, (x_offset, y_offset))
 
     # Draw Separator
-    pygame.draw.line(canvas, BLACK_COLOR, (0, y_offset + 30), (CANVAS_RESOLUTION[0], y_offset + 30), 2)
+    y_offset += 25
+    pygame.draw.line(canvas, WHITE_COLOR, (0, y_offset), (CANVAS_RESOLUTION[0], y_offset), 2)
 
     # Draw Table Rows
-    y_offset += 40
     for lobby in lobbies:
-        text_col_y_offset = 5
+        y_offset += 15
         for col, key in enumerate(["name", "host_player.player_name", "settings.min_players", "settings.max_players", "player_count", "status", ""]):
             x_offset = sum(col_widths[:col]) + (CELL_PADDING * (col + 1))
             if key == "":
@@ -114,11 +116,11 @@ def __draw_table(
                     value = truncate_text(value, 25)
                 if key == "status":
                     value = LobbyStatus.Name(value)
-                cell_text = font.render(str(value), True, BLACK_COLOR)
-                canvas.blit(cell_text, (x_offset, y_offset + text_col_y_offset))
-        y_offset += 50
+                cell_text = font.render(str(value), True, WHITE_COLOR)
+                canvas.blit(cell_text, (x_offset, y_offset))
+        y_offset += 40
 
-    pygame.draw.rect(canvas, BLACK_COLOR, pygame.Rect(0, starting_y_offset, CANVAS_RESOLUTION[0], y_offset - 50), 2)
+    pygame.draw.rect(canvas, WHITE_COLOR, pygame.Rect(0, starting_y_offset, CANVAS_RESOLUTION[0], y_offset - 50), 2)
 
 
 def __draw_host_btn(

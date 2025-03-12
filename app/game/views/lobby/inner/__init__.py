@@ -4,12 +4,15 @@ from typing import Tuple, List, Callable, NamedTuple
 
 from pythonic_poker_sdk.rpc import GameState, LobbyStatus, LobbySettings
 from app.components import Button
-from app.constants.color import BLACK_COLOR, WHITE_COLOR
+from app.constants.color import WHITE_COLOR
 from app.game.events import PythonicPokerEvent
 
 
 # Data
 event_handlers = {}
+
+# Rendering
+BACKGROUND_COLOR = (20, 20, 20)
 
 
 class LobbyInnerViewRenderArgs(NamedTuple):
@@ -99,7 +102,7 @@ def __draw_host_ui(
     start_match_handler: Callable[[], None],
 ):
     font = pygame.font.SysFont("Arial", 20)
-    canvas.fill(WHITE_COLOR)
+    canvas.fill(BACKGROUND_COLOR)
 
     starting_y_offset = 60
     y_offset = starting_y_offset
@@ -110,9 +113,9 @@ def __draw_host_ui(
     y_offset += 80
 
     # Draw Matchmaking Status Area
-    status_label_txt = font.render("Lobby Status:", True, BLACK_COLOR)
+    status_label_txt = font.render("Lobby Status:", True, WHITE_COLOR)
     canvas.blit(status_label_txt, (100, y_offset))
-    status_value_txt = font.render(LobbyStatus.Name(lobby_status), True, BLACK_COLOR)
+    status_value_txt = font.render(LobbyStatus.Name(lobby_status), True, WHITE_COLOR)
     canvas.blit(status_value_txt, (100 + 250, y_offset))
     y_offset += 50
 
@@ -155,7 +158,7 @@ def __draw_player_ui(
     decline_match_handler: Callable[[], None],
 ):
     font = pygame.font.SysFont("Arial", 20)
-    canvas.fill(WHITE_COLOR)
+    canvas.fill(BACKGROUND_COLOR)
 
     starting_y_offset = 60
     y_offset = starting_y_offset
@@ -165,9 +168,9 @@ def __draw_player_ui(
     y_offset += 80
 
     # Draw Matchmaking Status Area
-    status_label_txt = font.render("Lobby Status:", True, BLACK_COLOR)
+    status_label_txt = font.render("Lobby Status:", True, WHITE_COLOR)
     canvas.blit(status_label_txt, (100, y_offset))
-    status_value_txt = font.render(LobbyStatus.Name(lobby_status), True, BLACK_COLOR)
+    status_value_txt = font.render(LobbyStatus.Name(lobby_status), True, WHITE_COLOR)
     canvas.blit(status_value_txt, (100 + 250, y_offset))
     y_offset += 50
 
@@ -299,14 +302,14 @@ def __draw_lobby_settings(
     font = pygame.font.SysFont("Arial", 20)
     x_offset, y_offset = pos
 
-    game_mode_label_txt = font.render("Game Mode:", True, BLACK_COLOR)
-    game_mode_value_txt = font.render(LobbySettings.GameMode.Name(lobby_settings.game_mode), True, BLACK_COLOR)
-    ante_amount_label_txt = font.render("Ante Amount:", True, BLACK_COLOR)
-    ante_amount_value_txt = font.render(f"{lobby_settings.ante_amount} credits", True, BLACK_COLOR)
-    min_players_label_txt = font.render("Minimum Players:", True, BLACK_COLOR)
-    min_players_value_txt = font.render(str(lobby_settings.min_players), True, BLACK_COLOR)
-    max_players_label_txt = font.render("Maximum Players:", True, BLACK_COLOR)
-    max_players_value_txt = font.render(str(lobby_settings.max_players), True, BLACK_COLOR)
+    game_mode_label_txt = font.render("Game Mode:", True, WHITE_COLOR)
+    game_mode_value_txt = font.render(LobbySettings.GameMode.Name(lobby_settings.game_mode), True, WHITE_COLOR)
+    ante_amount_label_txt = font.render("Ante Amount:", True, WHITE_COLOR)
+    ante_amount_value_txt = font.render(f"{lobby_settings.ante_amount} credits", True, WHITE_COLOR)
+    min_players_label_txt = font.render("Minimum Players:", True, WHITE_COLOR)
+    min_players_value_txt = font.render(str(lobby_settings.min_players), True, WHITE_COLOR)
+    max_players_label_txt = font.render("Maximum Players:", True, WHITE_COLOR)
+    max_players_value_txt = font.render(str(lobby_settings.max_players), True, WHITE_COLOR)
 
     canvas.blit(game_mode_label_txt, (x_offset, y_offset))
     canvas.blit(game_mode_value_txt, (x_offset + 250, y_offset))
@@ -337,16 +340,16 @@ def __draw_player_acceptance(
     font = pygame.font.SysFont("Arial", 20)
     x_offset, y_offset = pos
 
-    accepted_label_txt = font.render("Accepted Players:", True, BLACK_COLOR)
-    accepted_label_count_txt = font.render(f"[{len(accepted_players_set)}]", True, BLACK_COLOR)
-    pending_label_txt = font.render("Pending Players:", True, BLACK_COLOR)
-    pending_label_count_txt = font.render(f"[{len(pending_players_set)}]", True, BLACK_COLOR)
+    accepted_label_txt = font.render("Accepted Players:", True, WHITE_COLOR)
+    accepted_label_count_txt = font.render(f"[{len(accepted_players_set)}]", True, WHITE_COLOR)
+    pending_label_txt = font.render("Pending Players:", True, WHITE_COLOR)
+    pending_label_count_txt = font.render(f"[{len(pending_players_set)}]", True, WHITE_COLOR)
 
     canvas.blit(accepted_label_txt, (x_offset, y_offset))
     canvas.blit(accepted_label_count_txt, (x_offset + 250, y_offset))
     y_offset += 30
     for player in accepted_players_set:
-        player_txt = font.render(f"- {player}", True, BLACK_COLOR)
+        player_txt = font.render(f"- {player}", True, WHITE_COLOR)
         canvas.blit(player_txt, (x_offset, y_offset))
         y_offset += 25
     y_offset += 50
@@ -355,7 +358,7 @@ def __draw_player_acceptance(
     canvas.blit(pending_label_count_txt, (x_offset + 250, y_offset))
     y_offset += 30
     for player in pending_players_set:
-        player_txt = font.render(f"- {player}", True, BLACK_COLOR)
+        player_txt = font.render(f"- {player}", True, WHITE_COLOR)
         canvas.blit(player_txt, (x_offset, y_offset))
         y_offset += 25
 
