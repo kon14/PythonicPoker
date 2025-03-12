@@ -69,8 +69,8 @@ def __poll_data(conn: ServerConnection):
 def __draw_table(
     canvas: pygame.Surface,
     lobbies: Collection[LobbyInfoPublic],
-    join_lobby: Callable[[str], None],
-    host_lobby: Callable[[], None],
+    join_lobby_handler: Callable[[str], None],
+    host_lobby_handler: Callable[[], None],
 ):
     global event_handlers
     headers = ["Lobby Name", "Host Player", "Min Players", "Max Players", "Player Count", "Lobby Status"]
@@ -82,7 +82,7 @@ def __draw_table(
     y_offset = starting_y_offset
 
     # Draw Host Lobby Button
-    __draw_host_btn(canvas, host_lobby, (1140, 10))
+    __draw_host_btn(canvas, host_lobby_handler, (1140, 10))
 
     # Draw Table Header
     y_offset += 5
@@ -102,7 +102,6 @@ def __draw_table(
             x_offset = sum(col_widths[:col]) + (CELL_PADDING * (col + 1))
             if key == "":
                 # Join Button
-                join_lobby_handler = lambda: join_lobby(lobby.lobby_id)
                 __draw_join_btn(
                     canvas,
                     lobby.lobby_id,
@@ -142,7 +141,7 @@ def __draw_join_btn(
     canvas: pygame.Surface,
     lobby_id: str,
     is_joinable: bool,
-    join_lobby_handler: Callable[[], None],
+    join_lobby_handler: Callable[[str], None],
     pos: Tuple[int, int],
 ):
     btn = Button(
@@ -150,7 +149,7 @@ def __draw_join_btn(
         text="Join",
         pos=pos,
         event_handlers=event_handlers,
-        handler=join_lobby_handler,
+        handler=lambda: join_lobby_handler(lobby_id),
     )
     if is_joinable:
         btn.enable()
