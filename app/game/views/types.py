@@ -14,6 +14,7 @@ View = Literal[
     "poker-ante",
     "poker-dealing",
     "poker-betting",
+    "poker-betting-bet-modal",
     "poker-drawing",
     "poker-showdown",
 ]
@@ -30,6 +31,7 @@ VALID_VIEWS = [
     "poker-ante",
     "poker-dealing",
     "poker-betting",
+    "poker-betting-bet-modal",
     "poker-drawing",
     "poker-showdown",
 ]

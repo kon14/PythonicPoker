@@ -27,6 +27,8 @@ class Button:
         font: str = "Arial",
         font_size: int = 20,
         padding: int = 5,
+        fixed_width: Optional[int] = None,
+        fixed_height: Optional[int] = None,
     ):
         self.id = id
         self.text = text
@@ -39,6 +41,8 @@ class Button:
         self.txt_color_disabled = txt_color_disabled or txt_color
         self.bg_color_disabled = bg_color_disabled or bg_color
         self.disabled = False
+        self.fixed_width = fixed_width
+        self.fixed_height = fixed_height
         surf = self.__build_surf()
         self.rect = surf.get_rect()
         self.rect.topleft = pos
@@ -87,8 +91,8 @@ class Button:
             bg_color = self.bg_color
         text_surface = self.font.render(self.text, True, txt_color)
         text_width, text_height = text_surface.get_size()
-        bg_width = text_width + 2 * self.padding
-        bg_height = text_height + 2 * self.padding
+        bg_width = self.fixed_width or (text_width + 2 * self.padding)
+        bg_height = self.fixed_height or (text_height + 2 * self.padding)
         bg_surface = pygame.Surface((bg_width, bg_height))
         bg_surface.fill(bg_color)
         text_rect = text_surface.get_rect(center=(bg_width // 2, bg_height // 2))

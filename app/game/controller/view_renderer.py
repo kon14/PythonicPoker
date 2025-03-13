@@ -40,15 +40,15 @@ def game_logic(
         assert connection is not None
         assert player is not None
         data = views.lobby.selection.act(conn=connection)
-        views.lobby.selection.handle_events(events)
         views.lobby.selection.render(data, canvas)
+        views.lobby.selection.handle_events(events)
 
     elif view == "lobby-creation":
         assert connection is not None
         assert player is not None
         data = views.lobby.host.act()
-        views.lobby.host.handle_events(events)
         views.lobby.host.render(data, canvas)
+        views.lobby.host.handle_events(events)
 
     elif view == "lobby":
         assert connection is not None
@@ -58,8 +58,8 @@ def game_logic(
             return
         assert game_state is not None
         data = views.lobby.inner.act(game_state)
-        views.lobby.inner.handle_events(events)
         views.lobby.inner.render(data, canvas)
+        views.lobby.inner.handle_events(events)
 
     elif view == "poker-ante":
         assert connection is not None
@@ -73,11 +73,15 @@ def game_logic(
         # TODO
         views.game.dealing.render(canvas, game_state)
 
-    elif view == "poker-betting":
+    elif view.startswith("poker-betting"):
         assert connection is not None
         assert player is not None
-        # TODO
         views.game.betting.render(canvas, game_state)
+        if view == "poker-betting":
+            views.game.phases.betting.handle_events(events)
+        elif view == "poker-betting-bet-modal":
+            views.game.betting.bet_modal.render(canvas, game_state)
+            views.game.phases.betting.bet_modal.handle_events(events)
 
     elif view == "poker-drawing":
         assert connection is not None

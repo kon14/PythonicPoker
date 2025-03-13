@@ -15,6 +15,10 @@ class PythonicPokerEvent(Enum):
     SET_LOBBY_MATCHMAKING = pygame.USEREVENT + 6
     RESPOND_LOBBY_MATCHMAKING = pygame.USEREVENT + 7
     START_LOBBY_MATCH = pygame.USEREVENT + 8
+    BETTING_BET = pygame.USEREVENT + 9
+    BETTING_CALL = pygame.USEREVENT + 10
+    BETTING_RAISE = pygame.USEREVENT + 11
+    BETTING_FOLD = pygame.USEREVENT + 12
 
 
     @staticmethod
@@ -62,4 +66,28 @@ class PythonicPokerEvent(Enum):
     @staticmethod
     def start_lobby_match():
         event = pygame.event.Event(PythonicPokerEvent.START_LOBBY_MATCH.value)
+        pygame.event.post(event)
+
+
+    @staticmethod
+    def betting_bet(bet_amount: int):
+        event = pygame.event.Event(PythonicPokerEvent.BETTING_BET.value, bet_amount=bet_amount)
+        pygame.event.post(event)
+
+
+    @staticmethod
+    def betting_call():
+        event = pygame.event.Event(PythonicPokerEvent.BETTING_CALL.value)
+        pygame.event.post(event)
+
+
+    @staticmethod
+    def betting_raise(bet_amount: int):
+        event = pygame.event.Event(PythonicPokerEvent.BETTING_RAISE.value, raise_bet_amount=bet_amount)
+        pygame.event.post(event)
+
+
+    @staticmethod
+    def betting_fold():
+        event = pygame.event.Event(PythonicPokerEvent.BETTING_FOLD.value)
         pygame.event.post(event)

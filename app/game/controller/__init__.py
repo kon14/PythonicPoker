@@ -1,9 +1,10 @@
 import pygame
+from google.protobuf.empty_pb2 import Empty
 from typing import List, Optional
 
 from pythonic_poker_sdk import PlayerIdentity, GameState, PokerPhaseEnum, \
     host_lobby_rpc, join_lobby_rpc, set_lobby_matchmaking_status_rpc, respond_lobby_matchmaking_rpc, \
-    start_lobby_game_rpc, LobbyInfoPublic
+    start_lobby_game_rpc, LobbyInfoPublic, RespondBettingPhaseRequest, respond_betting_phase_rpc
 from app.constants.display import CANVAS_RESOLUTION, DISPLAY_RESOLUTION, FRAMES_PER_SECOND
 from .view_renderer import game_logic
 from .watch_state import start_watch_state_thread
@@ -151,6 +152,46 @@ class GameController:
                     start_lobby_game_rpc(
                         stub=self.connection.stub,
                         player=self.player,
+                    )
+                except Exception as err:
+                    print(err)
+
+            elif event.type == PythonicPokerEvent.BETTING_BET.value:
+                try:
+                    respond_betting_phase_rpc(
+                        stub=self.connection.stub,
+                        player=self.player,
+                        req=RespondBettingPhaseRequest(bet=event.bet_amount)
+                    )
+                except Exception as err:
+                    print(err)
+
+            elif event.type == PythonicPokerEvent.BETTING_CALL.value:
+                try:
+                    respond_betting_phase_rpc(
+                        stub=self.connection.stub,
+                        player=self.player,
+                        req=RespondBettingPhaseRequest(call=Empty())
+                    )
+                except Exception as err:
+                    print(err)
+
+            elif event.type == PythonicPokerEvent.BETTING_RAISE.value:
+                try:
+                    respond_betting_phase_rpc(
+                        stub=self.connection.stub,
+                        player=self.player,
+                        req=RespondBettingPhaseRequest(raise_bet=event.raise_bet_amount)
+                    )
+                except Exception as err:
+                    print(err)
+
+            elif event.type == PythonicPokerEvent.BETTING_FOLD.value:
+                try:
+                    respond_betting_phase_rpc(
+                        stub=self.connection.stub,
+                        player=self.player,
+                        req=RespondBettingPhaseRequest(fold=Empty())
                     )
                 except Exception as err:
                     print(err)
